@@ -1,0 +1,107 @@
+<p-table [columns]="cols" [value]="posts" selectionMode="single" [(selection)]="selectedPost" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10">
+    <ng-template pTemplate="caption">
+        <h2> POST List </h2>
+        <div style="text-align:left">
+            <button type="button" pButton icon="pi pi-plus" class="ui-button-rounded"
+              style="color:rgb(255, 217, 127)" 
+             (click)="showDialogToAdd()" label="Create Post"></button>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns >
+        <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+                {{rowData[col.field]}}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-dialog header="Post Details" 
+  [(visible)]="displayDialog" 
+  [closable] = "false"
+  [responsive]="true" 
+  showEffect="fade" 
+  [modal]="true"  
+  width="600" >
+  
+  <div class="ui-g ui-fluid" *ngIf="post">
+        <div class="ui-g-12">
+            <div class="ui-g-2">
+                <label for="id">ID</label>
+            </div>
+            <div class="ui-g-10">
+              {{post.id}}
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-2">
+                <label for="usrId">User ID</label>
+            </div>
+            <div class="ui-g-10">
+              {{post.userId}}
+            </div>
+        </div>
+        <div *ngIf="!newPost">
+          <div class="ui-g-12">
+            <div class="ui-g-2">
+                <label for="fitle">Title</label>
+            </div>
+            <div class="ui-g-10">
+              {{post.title}}
+            </div>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-2">
+                <label for="body">Body</label>
+            </div>
+            <div class="ui-g-10">
+              {{post.body}}
+                <!--input pInputText id="address" [(ngModel)]="userAddress" /-->
+            </div>
+        </div>
+        </div>
+        <div *ngIf="newPost">
+            <div class="ui-g-12">
+                <div class="ui-g-2">
+                    <label for="fitle">Title</label>
+                </div>
+                <div class="ui-g-10">
+                  <!--input pInputText id="title" [(ngModel)]="myTitle" /-->
+                  <textarea rows="1" cols="24" maxlength="24" pInputTextarea [(ngModel)]="myTitle"></textarea>
+                </div>
+            </div>
+            <div class="ui-g-12">
+                <div class="ui-g-2">
+                    <label for="body">Body</label>
+                </div>
+                <div class="ui-g-10">
+                    <!--input pInputText id="body" [(ngModel)]="myBody" /-->
+                    <textarea rows="1" cols="50" maxlength="50" pInputTextarea [(ngModel)]="myBody"></textarea>
+                  </div>
+            </div>
+          </div>    
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <div *ngIf="!newPost">
+            <button type="button" pButton class="ui-button-rounded ui-button-success" icon="pi pi-check" (click)="close()" label="OK"></button>
+          </div>
+          <div *ngIf="newPost">
+              <button type="button" pButton class="ui-button-rounded ui-button-prime" icon="pi pi-plus" (click)="save()" label="Create"></button>
+              <button type="button" pButton class="ui-button-rounded ui-button-success" icon="pi pi-check" (click)="close()" label="Close"></button>
+            </div>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<p-dialog width="400" header="Message:" [(visible)]="showMsg">
+<span style="height:200px" >{{msg}}</span>
+</p-dialog>
